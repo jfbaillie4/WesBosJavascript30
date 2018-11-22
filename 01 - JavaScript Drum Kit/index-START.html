@@ -58,21 +58,35 @@
   <audio data-key="l" src="sounds/tink.wav"></audio>
 
 <script>
+ 
   document.addEventListener("keydown", keyDown);
-  document.addEventListener("keyup", keyUp);
 
   function keyDown(e) {
     let button = document.querySelector(`div[data-key="${e.key}"]`);
+    if (!button) return; //stop the function if no corresponding key.
     button.classList.add("playing");
     let audio = document.querySelector(`audio[data-key="${e.key}"]`);
     audio.currentTime = 0;
     audio.play();
   }
 
+  function removeTransition(e) {
+    if(e.propertyName!='transform') return;
+    this.classList.remove("playing"); 
+  }
+
+  const keys = document.querySelectorAll(".key");
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+  /*
+  Removed this function because more stable solution using the 'tranistion end' event listener
+
   function keyUp(e) {
     let button = document.querySelector(`div[data-key="${e.key}"]`);
+    if (!button) return; //stop function if no corresponiding key
     button.classList.remove("playing");
   }
+  */
 
 </script>
 
