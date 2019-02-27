@@ -96,6 +96,39 @@
   </div>
 
 <script>
+
+
+  let lastChecked;
+  
+  function handleCheck(e) {
+    console.log(e)
+    
+    let inbetween = false;
+    if(e.shiftKey && this.checked) {
+      checkboxes.forEach(checkbox => {
+        if (checkbox === lastChecked || checkbox === this) {
+          //console.log(`before: ${inbetween}`)
+          inbetween = !inbetween;
+          //console.log(`after: ${inbetween}`)
+        } else if (!checkbox.checked && inbetween === true) {
+          checkbox.checked = true;
+          //console.log("checked")
+        } else {
+          //console.log("no conditions met")
+        }
+      });
+    }
+
+    lastChecked = this;
+
+  }
+
+  const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+  for (var i = 0; i < checkboxes.length; i++) {
+    var checkbox = checkboxes[i];
+    checkbox.addEventListener('click', handleCheck);
+}
+
 </script>
 </body>
 </html>
