@@ -41,9 +41,15 @@ function skip(e) {
 }
 
 function pickTime(e) {
-    console.log(e.path["0"].clientWidth)
-    console.log(e.path["0"].clientX)
-    console.log(e)
+    if (e.path["0"].className === "progress__filled") {
+        progressWidth = e.path[1].clientWidth
+    } else if (e.path["0"].className === "progress") {
+        progressWidth = e.path["0"].clientWidth
+    } else {
+        console.error("pickTime error: unexpected className")
+    }
+
+    video.currentTime = (e.offsetX/progressWidth) * video.duration
 }
 
 
