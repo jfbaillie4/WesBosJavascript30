@@ -78,3 +78,19 @@
       outline: 0;
       border: 1px solid rgba(0,0,0,0.1);
     }
+
+    .manage-items {
+      display: flex;
+      padding-top: 10px;
+      margin: 0 -3px;
+    }
+
+    .manage-items div {
+      flex: 1;
+      height: 35px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background-color: white;
+      margin: 0 3px;
+      font: 400 11px system-ui;
+      padding: 10px 0;
+    }

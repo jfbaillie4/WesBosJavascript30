@@ -23,12 +23,74 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+    <div class="manage-items">
+      <div id="Select">Select All</div>
+      <div id="Deselect">Deselect All</div>
+      <div id="Clear">Clear</div>
+    </div>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const manageButtons = document.querySelector('.manage-items')
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+
+  function addItem(e) {
+    e.preventDefault();
+    const text = (this.querySelector('[name=item]')).value;
+    const item = {
+      text,
+      done: false
+    };
+    items.push(item);
+    populateList(items, itemsList);
+    localStorage.setItem('items', JSON.stringify(items));
+    this.reset();
+  }
+
+  function populateList(plates = [], platesList) {
+    platesList.innerHTML = plates.map((plate, i) => {
+      return `  
+        <li>
+          <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''} />
+          <label for="item${i}">${plate.text}</label>
+        </li>
+      `;
+    }).join('');
+  }
+
+  function toggleDone(e) {
+    if(!e.target.matches('input')) return;
+    const el = e.target;
+    const index = el.dataset.index;
+    items[index].done = !items[index].done;
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+
+  function manageItems(e) {
+    const button = e.path["0"].id;
+
+    if (button === "Select") {
+      items.forEach(item => item.done = true);
+      populateList(items, itemsList);
+    } else if (button === "Deselect") {
+      items.forEach(item => item.done = false);
+      populateList(items, itemsList);
+    } else if (button === "Clear") {
+      itemsList.innerHTML = "";
+      items.length = 0;
+      localStorage.removeItem('items');
+    };
+  };
+
+  addItems.addEventListener('submit', addItem);
+  itemsList.addEventListener('click', toggleDone);
+  manageButtons.addEventListener('click', manageItems)
+
+
+  populateList(items, itemsList);
 
 </script>
 
