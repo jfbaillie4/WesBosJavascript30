@@ -182,6 +182,54 @@
     </li>
   </ul>
 <script>
+
+const vids = document.querySelectorAll('.videos li');
+const vidLengthArray = [];
+
+vids.forEach(vid => {vidLengthArray.push(vid.dataset.time)});
+
+const reducerTimes = (accumulator, currentValue) => {
+  const[mins, secs] = currentValue.split(":").map(parseFloat);
+  return (mins*60) + secs + accumulator;
+};
+
+let secondsLeft = vidLengthArray.reduce(reducerTimes, 0);
+const hours = Math.floor(secondsLeft / 3600);
+secondsLeft = secondsLeft % 3600;
+
+const mins = Math.floor(secondsLeft / 60);
+secondsLeft = secondsLeft % 60;
+
+console.log(hours, mins, secondsLeft);
+
+
+/*
+
+//My first solution. It works fine, but based on WesBos solution I wanted to try
+//approach of totalling the sencond first
+
+const reducerTimes = (accumulator, currentValue) => {
+  accumulatorArray = accumulator.split(":");
+  currentValueArray = currentValue.split(":");
+
+  let accumulatedSeconds = parseInt(accumulatorArray[1]) + parseInt(currentValueArray[1]);
+  let accumulatedMinutes = parseInt(accumulatorArray[0]) + parseInt(currentValueArray[0]);
+
+  if (accumulatedSeconds > 60) {
+    console.log(`minutes: ${accumulatedMinutes}, seconds ${accumulatedSeconds}`)
+    accumulatedMinutes = accumulatedMinutes + Math.floor(accumulatedSeconds/60);
+    accumulatedSeconds = accumulatedSeconds % 60;
+    console.log(`minutes: ${accumulatedMinutes}, seconds ${accumulatedSeconds}`)
+  }
+
+  return `${accumulatedMinutes}:${accumulatedSeconds}`;
+}
+
+console.log(vidLengthArray.reduce(reducerTimes));
+
+*/
+
+
 </script>
 </body>
 </html>
